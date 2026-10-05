@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.0 - Unreleased
+## 0.1.0 - 2026-10-05
 
 - First release: Ready, events, scores, per-player storage, managed AI text, and Feedback & tools
   (Screenshot from Construct's renderer, Comment, Console, Performance) on Prototir. Uses the
