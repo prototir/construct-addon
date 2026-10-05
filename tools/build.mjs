@@ -125,4 +125,11 @@ for (const [name, content] of files) {
 	mkdirSync(dirname(target), { recursive: true });
 	writeFileSync(target, content);
 }
-console.log(`Built dist/prototir.c3addon: ${files.size} files, ${count} actions, conditions and expressions, SDK ${/v?(\d+\.\d+\.\d+)/.exec(JSON.parse(readFileSync(join(root, '..', 'prototir-web-sdk', 'package.json'), 'utf8')).version)?.[1] ?? 'vendored'}.`);
+// The SDK version, when the web-sdk repository is cloned beside this one (not in CI).
+let sdkVersion = 'vendored';
+try {
+	sdkVersion = JSON.parse(readFileSync(join(root, '..', 'prototir-web-sdk', 'package.json'), 'utf8')).version;
+} catch {
+	/* not cloned here */
+}
+console.log(`Built dist/prototir.c3addon: ${files.size} files, ${count} actions, conditions and expressions, SDK ${sdkVersion}.`);
