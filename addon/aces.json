@@ -1,0 +1,188 @@
+{
+	"$schema": "../tools/aces.schema.json",
+	"prototir": {
+		"conditions": [
+			{
+				"id": "is-on-prototir",
+				"scriptName": "IsOnPrototir"
+			},
+			{
+				"id": "is-feedback-open",
+				"scriptName": "IsFeedbackOpen"
+			},
+			{
+				"id": "on-value-loaded",
+				"scriptName": "OnValueLoaded",
+				"isTrigger": true,
+				"params": [
+					{
+						"id": "key",
+						"type": "string"
+					}
+				]
+			},
+			{
+				"id": "on-ai-response",
+				"scriptName": "OnAIResponse",
+				"isTrigger": true,
+				"params": [
+					{
+						"id": "tag",
+						"type": "string"
+					}
+				]
+			},
+			{
+				"id": "on-ai-error",
+				"scriptName": "OnAIError",
+				"isTrigger": true,
+				"params": [
+					{
+						"id": "tag",
+						"type": "string"
+					}
+				]
+			},
+			{
+				"id": "on-feedback-opened",
+				"scriptName": "OnFeedbackOpened",
+				"isTrigger": true
+			},
+			{
+				"id": "on-feedback-closed",
+				"scriptName": "OnFeedbackClosed",
+				"isTrigger": true
+			}
+		],
+		"actions": [
+			{
+				"id": "ready",
+				"scriptName": "Ready",
+				"highlight": true
+			},
+			{
+				"id": "send-event",
+				"scriptName": "SendEvent",
+				"highlight": true,
+				"params": [
+					{
+						"id": "name",
+						"type": "string"
+					},
+					{
+						"id": "data",
+						"type": "string",
+						"initialValue": "\"\""
+					}
+				]
+			},
+			{
+				"id": "report-score",
+				"scriptName": "ReportScore",
+				"highlight": true,
+				"params": [
+					{
+						"id": "value",
+						"type": "number"
+					}
+				]
+			},
+			{
+				"id": "save-value",
+				"scriptName": "SaveValue",
+				"params": [
+					{
+						"id": "key",
+						"type": "string"
+					},
+					{
+						"id": "value",
+						"type": "string"
+					}
+				]
+			},
+			{
+				"id": "load-value",
+				"scriptName": "LoadValue",
+				"params": [
+					{
+						"id": "key",
+						"type": "string"
+					}
+				]
+			},
+			{
+				"id": "remove-value",
+				"scriptName": "RemoveValue",
+				"params": [
+					{
+						"id": "key",
+						"type": "string"
+					}
+				]
+			},
+			{
+				"id": "generate-text",
+				"scriptName": "GenerateText",
+				"params": [
+					{
+						"id": "tag",
+						"type": "string"
+					},
+					{
+						"id": "prompt",
+						"type": "string"
+					},
+					{
+						"id": "max-tokens",
+						"type": "number",
+						"initialValue": "0"
+					}
+				]
+			},
+			{
+				"id": "open-comment",
+				"scriptName": "OpenComment"
+			},
+			{
+				"id": "take-screenshot",
+				"scriptName": "TakeScreenshot"
+			}
+		],
+		"expressions": [
+			{
+				"id": "stored-value",
+				"expressionName": "StoredValue",
+				"returnType": "string",
+				"params": [
+					{
+						"id": "key",
+						"type": "string"
+					}
+				]
+			},
+			{
+				"id": "ai-text",
+				"expressionName": "AIText",
+				"returnType": "string",
+				"params": [
+					{
+						"id": "tag",
+						"type": "string"
+					}
+				]
+			},
+			{
+				"id": "ai-error",
+				"expressionName": "AIError",
+				"returnType": "string",
+				"params": [
+					{
+						"id": "tag",
+						"type": "string"
+					}
+				]
+			}
+		]
+	}
+}

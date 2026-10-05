@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Construct runtime stand-in</title></head>
+<body>
+<canvas id="c" width="320" height="200"></canvas>
+<script>
+// A stand-in for Construct's two halves (DOM side and runtime side) and the message channel
+// between them, so the real addon files can run without the editor. Only the API the addon uses.
+const canvas = document.getElementById('c');
+const g = canvas.getContext('2d'); g.fillStyle = '#65a6ff'; g.fillRect(40, 40, 120, 80);
+const domHandlers = {};
+const runtimeHandlers = {};
+window.__runtimeHandlers = runtimeHandlers;
+window.__triggers = [];
+window.__loadPromises = [];
+class Base {}
+globalThis.C3 = { Plugins: {} };
+globalThis.ISDKPluginBase = Base;
+globalThis.ISDKObjectTypeBase = Base;
+globalThis.ISDKInstanceBase = class {
+	constructor() {
+		this.runtime = {
+			sdk: { addLoadPromise: (p) => window.__loadPromises.push(p) },
+			saveCanvasImage: (type, quality) => new Promise((resolve) => canvas.toBlob(resolve, type, quality))
+		};
+	}
+	_getInitProperties() { return [true]; }
+	_postToDOM(name, data) { domHandlers[name]?.(data ?? {}); }
+	_postToDOMAsync(name, data) { return Promise.resolve(domHandlers[name]?.(data ?? {})); }
+	_addDOMMessageHandler(name, fn) { runtimeHandlers[name] = fn; }
+	_trigger(method) { window.__triggers.push(method.name); }
+};
+globalThis.DOMHandler = class {
+	AddRuntimeMessageHandlers(list) { for (const [name, fn] of list) domHandlers[name] = fn; }
+	PostToRuntime(name, data) { runtimeHandlers[name]?.(data); }
+	PostToRuntimeAsync(name, data) { return Promise.resolve(runtimeHandlers[name]?.(data)); }
+};
+globalThis.RuntimeInterface = { AddDOMHandlerClass: (cls) => new cls({}) };
+</script>
+<script src="/addon/c3runtime/domSide.js"></script>
+<script type="module">
+import '/addon/c3runtime/main.js';
+const inst = new C3.Plugins.Prototir_SDK.Instance();
+await Promise.all(window.__loadPromises);
+window.__addon = {
+	inst,
+	acts: C3.Plugins.Prototir_SDK.Acts,
+	cnds: C3.Plugins.Prototir_SDK.Cnds,
+	exps: C3.Plugins.Prototir_SDK.Exps
+};
+</script>
+</body>
+</html>

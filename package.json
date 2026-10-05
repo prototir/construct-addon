@@ -1,0 +1,19 @@
+{
+	"name": "prototir-construct-addon",
+	"version": "0.1.0",
+	"private": true,
+	"description": "Prototir plugin for Construct 3.",
+	"license": "MIT",
+	"type": "module",
+	"scripts": {
+		"build": "node tools/build.mjs",
+		"test": "node tools/build.mjs && node tools/test.mjs"
+	},
+	"engines": {
+		"node": ">=20"
+	},
+	"devDependencies": {
+		"ajv": "^8.20.0",
+		"playwright": "1.61.0"
+	}
+}

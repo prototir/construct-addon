@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Prototir player stand-in</title></head>
+<body>
+<iframe id="f" width="400" height="300"></iframe>
+<script>
+// Answers the SDK the way the Prototir player does, and records what it was sent.
+window.__received = [];
+const frame = document.getElementById('f');
+const reply = (data) => frame.contentWindow.postMessage({ source: 'prototir', v: 1, ...data }, '*');
+window.addEventListener('message', (event) => {
+	if (event.source !== frame.contentWindow) return;
+	const m = event.data;
+	if (m?.type === 'review') {
+		window.__received.push({ type: 'review', op: m.op, image: m.payload?.screenshot?.image?.slice(0, 23) });
+		const value = m.op === 'hello' ? { mode: 'comments', composer: 'host', launcher: 'host' } : { ok: true };
+		frame.contentWindow.postMessage({ source: 'prototir', v: 1, type: 'review:result', id: m.id, value }, '*');
+		return;
+	}
+	if (m?.source !== 'prototir') return;
+	window.__received.push(m);
+	if (m.type === 'storage' && m.op === 'get') reply({ type: 'storage:result', id: m.id, value: m.key === 'best' ? '42' : null });
+	if (m.type === 'storage' && m.op !== 'get') reply({ type: 'storage:result', id: m.id });
+	if (m.type === 'ai') reply(m.prompt === 'fail'
+		? { type: 'ai:result', id: m.id, error: { code: 'disabled', message: 'AI is off for this prototype.' } }
+		: { type: 'ai:result', id: m.id, text: 'A quest about ' + m.prompt });
+});
+frame.src = '/game.html#prototir_origin=' + encodeURIComponent(location.origin) + '&prototir_slug=construct-test';
+</script>
+</body>
+</html>

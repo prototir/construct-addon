@@ -1,0 +1,209 @@
+{
+	"$schema": "../../tools/plugin.lang.schema.json",
+	"languageTag": "en-US",
+	"fileDescription": "Strings for the Prototir plugin.",
+	"text": {
+		"plugins": {
+			"prototir_sdk": {
+				"name": "Prototir",
+				"description": "Publish on Prototir: Ready, events, scores, storage, managed AI, and Feedback & tools for testers.",
+				"help-url": "https://github.com/prototir/construct-addon",
+				"properties": {
+					"feedback-tools": {
+						"name": "Testing tools",
+						"desc": "Offer testers the Console and Performance tools beside Screenshot and Comment."
+					}
+				},
+				"aceCategories": {
+					"prototir": "Prototir"
+				},
+				"conditions": {
+					"is-on-prototir": {
+						"list-name": "Is on Prototir",
+						"display-text": "Is on Prototir",
+						"description": "True when the game runs inside the Prototir player."
+					},
+					"is-feedback-open": {
+						"list-name": "Is feedback open",
+						"display-text": "Feedback is open",
+						"description": "True while a tester is writing feedback. Pause input while it is."
+					},
+					"on-value-loaded": {
+						"list-name": "On value loaded",
+						"display-text": "On value [b]{0}[/b] loaded",
+						"description": "Triggered when Load value finishes. Read it with StoredValue(key).",
+						"params": {
+							"key": {
+								"name": "Key",
+								"desc": "The key passed to Load value."
+							}
+						}
+					},
+					"on-ai-response": {
+						"list-name": "On AI response",
+						"display-text": "On AI response [b]{0}[/b]",
+						"description": "Triggered when Generate text succeeds. Read it with AIText(tag).",
+						"params": {
+							"tag": {
+								"name": "Tag",
+								"desc": "The tag passed to Generate text."
+							}
+						}
+					},
+					"on-ai-error": {
+						"list-name": "On AI error",
+						"display-text": "On AI error [b]{0}[/b]",
+						"description": "Triggered when Generate text fails. Read the reason with AIError(tag).",
+						"params": {
+							"tag": {
+								"name": "Tag",
+								"desc": "The tag passed to Generate text."
+							}
+						}
+					},
+					"on-feedback-opened": {
+						"list-name": "On feedback opened",
+						"display-text": "On feedback opened",
+						"description": "Triggered when a tester opens feedback. A good moment to pause."
+					},
+					"on-feedback-closed": {
+						"list-name": "On feedback closed",
+						"display-text": "On feedback closed",
+						"description": "Triggered when a tester closes feedback. A good moment to resume."
+					}
+				},
+				"actions": {
+					"ready": {
+						"list-name": "Ready",
+						"display-text": "Signal ready",
+						"description": "Call once the game is genuinely interactive, not while it still shows a loader."
+					},
+					"send-event": {
+						"list-name": "Send event",
+						"display-text": "Send event [b]{0}[/b] (data {1})",
+						"description": "Record an analytics event: 1-64 lowercase letters, numbers, _ . : or -.",
+						"params": {
+							"name": {
+								"name": "Name",
+								"desc": "For example level_complete."
+							},
+							"data": {
+								"name": "Data",
+								"desc": "Optional small JSON object, for example {\"level\": 2}. Leave empty for none."
+							}
+						}
+					},
+					"report-score": {
+						"list-name": "Report score",
+						"display-text": "Report score [b]{0}[/b]",
+						"description": "Report the player's score.",
+						"params": {
+							"value": {
+								"name": "Score",
+								"desc": "A finite number."
+							}
+						}
+					},
+					"save-value": {
+						"list-name": "Save value",
+						"display-text": "Save [b]{1}[/b] as [b]{0}[/b]",
+						"description": "Store a string for this prototype and player (up to 64 KiB).",
+						"params": {
+							"key": {
+								"name": "Key",
+								"desc": "1-128 characters."
+							},
+							"value": {
+								"name": "Value",
+								"desc": "The text to store."
+							}
+						}
+					},
+					"load-value": {
+						"list-name": "Load value",
+						"display-text": "Load value [b]{0}[/b]",
+						"description": "Load a stored string. When it arrives, On value loaded fires and StoredValue(key) returns it.",
+						"params": {
+							"key": {
+								"name": "Key",
+								"desc": "The key to load."
+							}
+						}
+					},
+					"remove-value": {
+						"list-name": "Remove value",
+						"display-text": "Remove value [b]{0}[/b]",
+						"description": "Remove a stored string.",
+						"params": {
+							"key": {
+								"name": "Key",
+								"desc": "The key to remove."
+							}
+						}
+					},
+					"generate-text": {
+						"list-name": "Generate text",
+						"display-text": "Generate text [b]{0}[/b] from [i]{1}[/i] (max tokens {2})",
+						"description": "Ask Prototir's managed AI for text (enable AI for the prototype first). On AI response or On AI error fires with the tag.",
+						"params": {
+							"tag": {
+								"name": "Tag",
+								"desc": "A name for this request, matched by the triggers."
+							},
+							"prompt": {
+								"name": "Prompt",
+								"desc": "What to generate."
+							},
+							"max-tokens": {
+								"name": "Max tokens",
+								"desc": "0 for the default; Prototir may lower it."
+							}
+						}
+					},
+					"open-comment": {
+						"list-name": "Open comment",
+						"display-text": "Open a comment",
+						"description": "Open the comment composer, for example from a pause menu."
+					},
+					"take-screenshot": {
+						"list-name": "Take screenshot",
+						"display-text": "Take a screenshot for feedback",
+						"description": "Capture the frame and open screenshot feedback."
+					}
+				},
+				"expressions": {
+					"stored-value": {
+						"translated-name": "StoredValue",
+						"description": "The value last loaded or saved for a key, or empty.",
+						"params": {
+							"key": {
+								"name": "Key",
+								"desc": "The key."
+							}
+						}
+					},
+					"ai-text": {
+						"translated-name": "AIText",
+						"description": "The text Generate text returned for a tag.",
+						"params": {
+							"tag": {
+								"name": "Tag",
+								"desc": "The tag."
+							}
+						}
+					},
+					"ai-error": {
+						"translated-name": "AIError",
+						"description": "Why Generate text failed for a tag.",
+						"params": {
+							"tag": {
+								"name": "Tag",
+								"desc": "The tag."
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
